@@ -4,23 +4,33 @@ declare(strict_types=1);
 
 namespace App\utils;
 
-$dotenv = Dotenv\Dotenv::createImmutable(DIR);
-$dotenv->load();
-
-
+use Dotenv\Dotenv;
 use PDO;
 use PDOException;
 
+
+
+
 class Database 
 {
+    private $pdo;
 
     public function connectDB()
     {
+        $dotenv = Dotenv::createImmutable(__DIR__ . '/../../');
+        $dotenv->load();
+
+        $host = $_ENV['host'];
+        $db = $_ENV['db'];
+        $user = $_ENV['user'];
+        $pass = $_ENV['pass'];
+
+        // var_dump($host, $db, $user, $pass);
         try {
             $dsn = "$host;$db";
-            new PDO($dsn, $user, $pass);
+            $this->pdo = new PDO($dsn, $user, $pass);
             $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            echo 'connection réussie';
+            // echo 'connection réussie';
         }
         catch(PDOException $e)
         {
@@ -28,10 +38,10 @@ class Database
         }
     }
 
-    public function query($sql) {
-        if ($this->pdo === null) {
-            throw new \Exception('Must connect to DB before querying');
-        }
-        return $this->pdo->query($sql);
+    public function query($sql, $params = [])
+    {
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute($params);
+        return $stmt;
     }
 }
