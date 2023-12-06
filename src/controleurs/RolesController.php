@@ -6,38 +6,29 @@ namespace App\controleurs;
 
 use APP\utils\Database;
 use APP\views\JsonView;
+use APP\models\Roles;
 use PDO;
 
 class RolesController
 {
-    private $db;
-    private $json;
+    private $rolesModel;
+    private $view;
 
     public function __construct()
     {
-        $this->db = new Database();
-        $this->json = new JsonView();
+        $this->rolesModel = new Roles();
+        $this->view = new JsonView();
     }
 
-    public function getRoles() 
+    public function getRoles()
     {
-        $this->db->connectDB();
-        $sql = "SELECT * FROM roles";
-        $stmt = $this->db->query($sql);
-        $roles = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $this->json->sendJSON($roles);
+        $roles = $this->rolesModel->getRoles();
+        $this->view->sendJSON($roles);
     }
 
-    public function getRoleById($id) 
+    public function getRoleById($id)
     {
-        $this->db->connectDB();
-        $sql = "SELECT * FROM roles WHERE id = :id";
-        $params = 
-        [
-            ':id' => $id
-        ];
-        $stmt = $this->db->query($sql, $params);
-        $role = $stmt->fetch(PDO::FETCH_ASSOC);
-        $this->json->sendJSON($role);
+        $role = $this->rolesModel->getRoleById($id);
+        $this->view->sendJSON($role);
     }
 }
