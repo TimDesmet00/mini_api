@@ -1,7 +1,11 @@
 <?php
-require_once 'src/controleurs/usersControlleur.php';
-require_once 'src/controleurs/rolesControlleur.php';
 require_once 'vendor/autoload.php';
+
+use APP\controleurs\UsersController;
+use APP\controleurs\RolesController;
+
+$usersController = new UsersController();
+$rolesController = new RolesController();
 
 try{
     if (!empty($_GET['demande'])) {
@@ -11,17 +15,17 @@ try{
             case 'users':
                 if(empty($url[1]))
                 {
-                    getUsers();
+                    $usersController->getUsers();
                 }else{
-                    getUserById($url[1]);
+                    $usersController->getUserById($url[1]);
                 }
                 break;
             case 'roles':
                 if(empty($url[1]))
                 {
-                    getRoles();
+                    $rolesController->getRoles();
                 }else{
-                    getRoleById($url[1]);
+                    $rolesController->getRoleById($url[1]);
                 }
                 break;
             default:

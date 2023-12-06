@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\utils;
+namespace APP\utils;
 
 use Dotenv\Dotenv;
 use PDO;
@@ -25,7 +25,6 @@ class Database
         $user = $_ENV['user'];
         $pass = $_ENV['pass'];
 
-        // var_dump($host, $db, $user, $pass);
         try {
             $dsn = "$host;$db";
             $this->pdo = new PDO($dsn, $user, $pass);

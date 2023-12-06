@@ -1,8 +1,8 @@
 <?php
 
-namespace App\models;
+namespace App\views;
 
-class Json 
+class JsonView 
 {
     function sendJSON($infos)
     {
